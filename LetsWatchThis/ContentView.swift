@@ -8,10 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
-    let categories = ["Movies", "Shows", "Books"]
+    @State private var isShowingMovieDetailView = false
+    @State private var isShowingShowDetailView = false
+    @State private var isShowingBookDetailView = false
+
+    let categories = [MediaType.movie, MediaType.show, MediaType.book]
+    var usersMovies: [MediaItem] = []
+    var usersShows: [MediaItem] = []
+    var usersBooks: [MediaItem] = []
+    var mediaArray: [MediaItem] = []
     
     init() {
         UIToolbar.appearance().barTintColor = UIColor.black
+        mediaArray = DataManager.loadAll(type: MediaItem.self) ?? []
+        mediaArray.forEach { item in
+            sortMedia(item: item)
+        }
     }
     
     var body: some View {
@@ -20,29 +32,32 @@ struct ContentView: View {
                 VStack(alignment: .leading, spacing: 20) {
                     ForEach(categories, id: \.self) { category in
                         VStack(alignment: .leading) {
-                            Text("My \(category):")
+                            Text("My \(category.rawValue.capitalizingFirstLetter())s:")
                                 .font(.title)
                             HStack(alignment: .top, spacing: 10, content: {
                                 ScrollView(.horizontal) {
                                     HStack() {
-                                        ForEach(0..<10) { title in
-                                            NavigationLink(destination: ItemDetailView()) {
-                                                VStack {
-                                                    Image("imagePlaceholder")
-                                                        .resizable()
-                                                        .frame(width: 80, height: 100)
-                                                        .cornerRadius(25)
-                                                    Text("Item \(title)")
-                                                        .foregroundColor(.white)
-                                                        .font(.title2)
-                                                        .frame(width: 100, height: 20)
+                                        ForEach(mediaArray, id: \.id) { item in
+                                            if (item.type == category) {
+                                                NavigationLink(destination: ItemDetailView(item: item)) {
+                                                    VStack {
+                                                        Image("\(item.imagePath)")
+                                                            .resizable()
+                                                            .frame(width: 100, height: 100)
+                                                            .cornerRadius(25)
+                                                            .allowsTightening(true)
+                                                        Text(item.title)
+                                                            .foregroundColor(.white)
+                                                            .font(.title2)
+                                                            .frame(width: 100, height: 20)
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
-                                NavigationLink(destination: CategoryDetailView()) {
-                                Text("View \nAll")
+                                NavigationLink(destination: ListDetailView(items: categoryToDisplay(type: category), title: "My \(category.rawValue.capitalizingFirstLetter())s:")) {
+                                    Text("View \nAll\n\(category.rawValue.capitalizingFirstLetter())s")
                                     .foregroundColor(.white)
                                     .font(.title2)
                                     .frame(width: 90, height: 100)
@@ -57,6 +72,9 @@ struct ContentView: View {
                     }
                 }
                 .padding()
+//                NavigationLink("My Movies", destination: ListDetailView(items: usersMovies, title: "My Movies:"), isActive: $isShowingMovieDetailView).hidden()
+//                NavigationLink("My Shows", destination: ListDetailView(items: usersShows, title: "My Shows:"), isActive: $isShowingMovieDetailView).hidden()
+//                NavigationLink("My Books", destination: ListDetailView(items: usersBooks, title: "My Books:"), isActive: $isShowingMovieDetailView).hidden()
             }
             .navigationTitle("Lets Watch This!")
             .toolbar {
@@ -73,6 +91,7 @@ struct ContentView: View {
                         
                         Button(action: {
                             print("Movies Button Pressed")
+                            isShowingMovieDetailView.toggle()
                         }, label: {
                             VStack {
                                 Image(systemName: "film")
@@ -82,6 +101,7 @@ struct ContentView: View {
                         
                         Button(action: {
                             print("Shows Button Pressed")
+                            isShowingShowDetailView.toggle()
                         }, label: {
                             VStack {
                                 Image(systemName: "tv")
@@ -91,6 +111,7 @@ struct ContentView: View {
                         
                         Button(action: {
                             print("Books Button Pressed")
+                            isShowingBookDetailView.toggle()
                         }, label: {
                             VStack {
                                 Image(systemName: "book")
@@ -112,6 +133,28 @@ struct ContentView: View {
             .background(Color.black.opacity(0.6).edgesIgnoringSafeArea(.all))
         }
         .navigationViewStyle(StackNavigationViewStyle())
+    }
+    
+    private mutating func sortMedia(item: MediaItem){
+        switch item.type {
+        case .movie:
+            usersMovies.append(item)
+        case .show:
+            usersShows.append(item)
+        case .book:
+            usersBooks.append(item)
+        }
+    }
+    
+    private func categoryToDisplay(type: MediaType) -> [MediaItem] {
+        switch type {
+        case .movie:
+            return usersMovies
+        case .show:
+            return usersShows
+        case .book:
+            return usersBooks
+        }
     }
 }
 
