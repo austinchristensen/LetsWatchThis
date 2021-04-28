@@ -17,6 +17,8 @@
 		43471DCE261E1019001475D4 /* MediaDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43471DCD261E1019001475D4 /* MediaDataModel.swift */; };
 		43471DD2261E1C1E001475D4 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43471DD1261E1C1E001475D4 /* Extensions.swift */; };
 		436486032624DCF4006DE814 /* MockUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436486022624DCF4006DE814 /* MockUserData.swift */; };
+		43CB0B312637618B00B119DC /* DataBaseJSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CB0B302637618B00B119DC /* DataBaseJSONParser.swift */; };
+		43CB0B34263861B200B119DC /* MediaUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CB0B33263861B200B119DC /* MediaUpdater.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		43471DCD261E1019001475D4 /* MediaDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaDataModel.swift; sourceTree = "<group>"; };
 		43471DD1261E1C1E001475D4 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		436486022624DCF4006DE814 /* MockUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserData.swift; sourceTree = "<group>"; };
+		43CB0B302637618B00B119DC /* DataBaseJSONParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBaseJSONParser.swift; sourceTree = "<group>"; };
+		43CB0B33263861B200B119DC /* MediaUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpdater.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +95,8 @@
 			children = (
 				43471DC9261E0F78001475D4 /* DataManager.swift */,
 				43471DCD261E1019001475D4 /* MediaDataModel.swift */,
+				43CB0B302637618B00B119DC /* DataBaseJSONParser.swift */,
+				43CB0B33263861B200B119DC /* MediaUpdater.swift */,
 			);
 			path = "Data Management";
 			sourceTree = "<group>";
@@ -174,12 +180,14 @@
 			files = (
 				436486032624DCF4006DE814 /* MockUserData.swift in Sources */,
 				43471D81261BCCB0001475D4 /* ContentView.swift in Sources */,
+				43CB0B34263861B200B119DC /* MediaUpdater.swift in Sources */,
 				43471DCA261E0F78001475D4 /* DataManager.swift in Sources */,
 				43471DCE261E1019001475D4 /* MediaDataModel.swift in Sources */,
 				43471DC2261D1E1E001475D4 /* ItemDetailView.swift in Sources */,
 				43471D7F261BCCB0001475D4 /* LetsWatchThisApp.swift in Sources */,
 				43471DC6261D1EAE001475D4 /* ListDetailView.swift in Sources */,
 				43471DD2261E1C1E001475D4 /* Extensions.swift in Sources */,
+				43CB0B312637618B00B119DC /* DataBaseJSONParser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

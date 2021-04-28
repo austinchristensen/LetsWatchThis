@@ -11,19 +11,16 @@ struct ContentView: View {
     @State private var isShowingMovieDetailView = false
     @State private var isShowingShowDetailView = false
     @State private var isShowingBookDetailView = false
+    @ObservedObject var updater = MediaUpdater()
 
     let categories = [MediaType.movie, MediaType.show, MediaType.book]
-    var usersMovies: [MediaItem] = []
-    var usersShows: [MediaItem] = []
-    var usersBooks: [MediaItem] = []
-    var mediaArray: [MediaItem] = []
     
     init() {
         UIToolbar.appearance().barTintColor = UIColor.black
-        mediaArray = DataManager.loadAll(type: MediaItem.self) ?? []
-        mediaArray.forEach { item in
-            sortMedia(item: item)
-        }
+        print("content view init: \(updater.mediaList.count)")
+        DataManager.getData(urlString: "http://localhost:3000/movies", updater: updater)
+        DataManager.getData(urlString: "http://localhost:3000/shows", updater: updater)
+        DataManager.getData(urlString: "http://localhost:3000/books", updater: updater)
     }
     
     var body: some View {
@@ -37,7 +34,7 @@ struct ContentView: View {
                             HStack(alignment: .top, spacing: 10, content: {
                                 ScrollView(.horizontal) {
                                     HStack() {
-                                        ForEach(mediaArray, id: \.id) { item in
+                                        ForEach(updater.mediaList, id: \.id) { item in
                                             if (item.type == category) {
                                                 NavigationLink(destination: ItemDetailView(item: item)) {
                                                     VStack {
@@ -77,84 +74,73 @@ struct ContentView: View {
 //                NavigationLink("My Books", destination: ListDetailView(items: usersBooks, title: "My Books:"), isActive: $isShowingMovieDetailView).hidden()
             }
             .navigationTitle("Lets Watch This!")
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    HStack(spacing: 20) {
-                        Button(action: {
-                            print("Home Button Pressed")
-                        }, label: {
-                            VStack {
-                                Image(systemName: "house")
-                                Text("Home")
-                            }
-                        })
-                        
-                        Button(action: {
-                            print("Movies Button Pressed")
-                            isShowingMovieDetailView.toggle()
-                        }, label: {
-                            VStack {
-                                Image(systemName: "film")
-                                Text("Movies")
-                            }
-                        })
-                        
-                        Button(action: {
-                            print("Shows Button Pressed")
-                            isShowingShowDetailView.toggle()
-                        }, label: {
-                            VStack {
-                                Image(systemName: "tv")
-                                Text("Shows")
-                            }
-                        })
-                        
-                        Button(action: {
-                            print("Books Button Pressed")
-                            isShowingBookDetailView.toggle()
-                        }, label: {
-                            VStack {
-                                Image(systemName: "book")
-                                Text("Books")
-                            }
-                        })
-                        
-                        Button(action: {
-                            print("Profile Button Pressed")
-                        }, label: {
-                            VStack {
-                                Image(systemName: "person")
-                                Text("Profile")
-                            }
-                        })
-                    }
-                }
-            }
+//            .toolbar {
+//                ToolbarItemGroup(placement: .bottomBar) {
+//                    HStack(spacing: 20) {
+//                        Button(action: {
+//                            print("Home Button Pressed")
+//                        }, label: {
+//                            VStack {
+//                                Image(systemName: "house")
+//                                Text("Home")
+//                            }
+//                        })
+//
+//                        Button(action: {
+//                            print("Movies Button Pressed")
+//                            print(updater.mediaList.count)
+//                            isShowingMovieDetailView.toggle()
+//                        }, label: {
+//                            VStack {
+//                                Image(systemName: "film")
+//                                Text("Movies")
+//                            }
+//                        })
+//
+//                        Button(action: {
+//                            print("Shows Button Pressed")
+//                            isShowingShowDetailView.toggle()
+//                        }, label: {
+//                            VStack {
+//                                Image(systemName: "tv")
+//                                Text("Shows")
+//                            }
+//                        })
+//
+//                        Button(action: {
+//                            print("Books Button Pressed")
+//                            isShowingBookDetailView.toggle()
+//                        }, label: {
+//                            VStack {
+//                                Image(systemName: "book")
+//                                Text("Books")
+//                            }
+//                        })
+//
+//                        Button(action: {
+//                            print("Profile Button Pressed")
+//                        }, label: {
+//                            VStack {
+//                                Image(systemName: "person")
+//                                Text("Profile")
+//                            }
+//                        })
+//                    }
+//                }
+//            }
             .background(Color.black.opacity(0.6).edgesIgnoringSafeArea(.all))
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
     
-    private mutating func sortMedia(item: MediaItem){
-        switch item.type {
-        case .movie:
-            usersMovies.append(item)
-        case .show:
-            usersShows.append(item)
-        case .book:
-            usersBooks.append(item)
-        }
-    }
-    
     private func categoryToDisplay(type: MediaType) -> [MediaItem] {
-        switch type {
-        case .movie:
-            return usersMovies
-        case .show:
-            return usersShows
-        case .book:
-            return usersBooks
+        var listToReturn: [MediaItem] = []
+        updater.mediaList.forEach { item in
+            if item.type == type {
+                listToReturn.append(item)
+            }
         }
+        return listToReturn
     }
 }
 

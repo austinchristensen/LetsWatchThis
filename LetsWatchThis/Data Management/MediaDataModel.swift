@@ -20,12 +20,4 @@ struct MediaItem : Codable {
     var description: String
     var type: MediaType
     var imagePath: String = "imagePlaceholder"
-    
-    func saveItem() {
-        DataManager.save(object: self, name: id.uuidString)
-    }
-    
-    func deleteItem() {
-        DataManager.delete(name: id.uuidString)
-    }
 }
