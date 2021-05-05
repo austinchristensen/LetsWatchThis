@@ -37,6 +37,6 @@ struct ItemDetailView: View {
 
 struct DetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ItemDetailView(item: MediaItem(title: "School of Rock", id: UUID(), isCompleted: true, description: "Wanna be rock star Dewey needs to pay the rent or he's out on the streets. After getting kicked out of his band he's desparate to find work. When a takes a call meant for his friend Ned, he hatches a clever plan", type: .movie))
+        ItemDetailView(item: MediaItem(title: "School of Rock", mediaID: 1, id: UUID(), isCompleted: true, description: "Wanna be rock star Dewey needs to pay the rent or he's out on the streets. After getting kicked out of his band he's desparate to find work. When a takes a call meant for his friend Ned, he hatches a clever plan", type: .movie))
     }
 }

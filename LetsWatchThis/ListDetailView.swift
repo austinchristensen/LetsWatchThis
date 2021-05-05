@@ -60,11 +60,11 @@ struct ListDetailView: View {
 struct ListDetailView_Previews: PreviewProvider {
     static var previews: some View {
         ListDetailView(items: [
-            MediaItem(title: "Movie 1", id: UUID(), isCompleted: true, description: "Description for Movie 1", type: .movie),
-            MediaItem(title: "Movie 2", id: UUID(), isCompleted: false, description: "Description for Movie 2", type: .movie),
-            MediaItem(title: "Movie 3", id: UUID(), isCompleted: true, description: "Description for Movie 3", type: .movie),
-            MediaItem(title: "Movie 4", id: UUID(), isCompleted: false, description: "Description for Movie 4", type: .movie),
-            MediaItem(title: "Movie 5", id: UUID(), isCompleted: true, description: "Description for Movie 5", type: .movie)
+            MediaItem(title: "Movie 1", mediaID: 1, id: UUID(), isCompleted: true, description: "Description for Movie 1", type: .movie),
+            MediaItem(title: "Movie 2", mediaID: 2, id: UUID(), isCompleted: false, description: "Description for Movie 2", type: .movie),
+            MediaItem(title: "Movie 3", mediaID: 3, id: UUID(), isCompleted: true, description: "Description for Movie 3", type: .movie),
+            MediaItem(title: "Movie 4", mediaID: 4, id: UUID(), isCompleted: false, description: "Description for Movie 4", type: .movie),
+            MediaItem(title: "Movie 5", mediaID: 5, id: UUID(), isCompleted: true, description: "Description for Movie 5", type: .movie)
         ], title: "My Movies:")
     }
 }

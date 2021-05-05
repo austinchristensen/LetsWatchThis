@@ -12,15 +12,15 @@ struct ContentView: View {
     @State private var isShowingShowDetailView = false
     @State private var isShowingBookDetailView = false
     @ObservedObject var updater = MediaUpdater()
+    let userID = 1
 
     let categories = [MediaType.movie, MediaType.show, MediaType.book]
     
     init() {
         UIToolbar.appearance().barTintColor = UIColor.black
-        print("content view init: \(updater.mediaList.count)")
-        DataManager.getData(urlString: "http://localhost:3000/movies", updater: updater)
-        DataManager.getData(urlString: "http://localhost:3000/shows", updater: updater)
-        DataManager.getData(urlString: "http://localhost:3000/books", updater: updater)
+        DataManager.getData(urlString: "http://localhost:3000/users-movies/\(userID)", updater: updater)
+        DataManager.getData(urlString: "http://localhost:3000/users-shows/\(userID)", updater: updater)
+        DataManager.getData(urlString: "http://localhost:3000/users-books/\(userID)", updater: updater)
     }
     
     var body: some View {
@@ -74,60 +74,86 @@ struct ContentView: View {
 //                NavigationLink("My Books", destination: ListDetailView(items: usersBooks, title: "My Books:"), isActive: $isShowingMovieDetailView).hidden()
             }
             .navigationTitle("Lets Watch This!")
-//            .toolbar {
-//                ToolbarItemGroup(placement: .bottomBar) {
-//                    HStack(spacing: 20) {
-//                        Button(action: {
-//                            print("Home Button Pressed")
-//                        }, label: {
-//                            VStack {
-//                                Image(systemName: "house")
-//                                Text("Home")
-//                            }
-//                        })
-//
-//                        Button(action: {
-//                            print("Movies Button Pressed")
-//                            print(updater.mediaList.count)
-//                            isShowingMovieDetailView.toggle()
-//                        }, label: {
-//                            VStack {
-//                                Image(systemName: "film")
-//                                Text("Movies")
-//                            }
-//                        })
-//
-//                        Button(action: {
-//                            print("Shows Button Pressed")
-//                            isShowingShowDetailView.toggle()
-//                        }, label: {
-//                            VStack {
-//                                Image(systemName: "tv")
-//                                Text("Shows")
-//                            }
-//                        })
-//
-//                        Button(action: {
-//                            print("Books Button Pressed")
-//                            isShowingBookDetailView.toggle()
-//                        }, label: {
-//                            VStack {
-//                                Image(systemName: "book")
-//                                Text("Books")
-//                            }
-//                        })
-//
-//                        Button(action: {
-//                            print("Profile Button Pressed")
-//                        }, label: {
-//                            VStack {
-//                                Image(systemName: "person")
-//                                Text("Profile")
-//                            }
-//                        })
-//                    }
-//                }
-//            }
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    HStack(spacing: 20) {
+                        Button(action: {
+                            print("Home Button Pressed")
+                        }, label: {
+                            VStack {
+                                Image(systemName: "house")
+                                Text("Home")
+                            }
+                        })
+
+                        Button(action: {
+                            print("Movies Button Pressed")
+                            isShowingMovieDetailView.toggle()
+                            let json = [
+                                "title": "Test Movie Insert",
+                                "summary": "Test Movie 1 Test Descriptions",
+                                "mediaType": "movie",
+                                "imagePath": "imagePlaceholder"
+                            ]
+                            let urlString = "http://localhost:3000/movies"
+                            
+                            DataManager.addData(urlString: urlString, params: json, updater: updater, userID: userID)
+                        }, label: {
+                            VStack {
+                                Image(systemName: "film")
+                                Text("Movies")
+                            }
+                        })
+
+                        Button(action: {
+                            print("Shows Button Pressed")
+                            isShowingShowDetailView.toggle()
+                            let json = [
+                                "title": "Test Show Insert",
+                                "summary": "Test Show 1 Test Descriptions",
+                                "mediaType": "show",
+                                "imagePath": "imagePlaceholder"
+                            ]
+                            let urlString = "http://localhost:3000/shows"
+                            
+                            DataManager.addData(urlString: urlString, params: json, updater: updater, userID: userID)
+                        }, label: {
+                            VStack {
+                                Image(systemName: "tv")
+                                Text("Shows")
+                            }
+                        })
+
+                        Button(action: {
+                            print("Books Button Pressed")
+                            isShowingBookDetailView.toggle()
+                            let json = [
+                                "title": "Test Book Insert",
+                                "summary": "Test Book 1 Test Descriptions",
+                                "mediaType": "book",
+                                "imagePath": "imagePlaceholder"
+                            ]
+                            let urlString = "http://localhost:3000/books"
+                            
+                            DataManager.addData(urlString: urlString, params: json, updater: updater, userID: userID)
+                        }, label: {
+                            VStack {
+                                Image(systemName: "book")
+                                Text("Books")
+                            }
+                        })
+
+                        Button(action: {
+                            print("Profile Button Pressed")
+                        }, label: {
+                            VStack {
+                                Image(systemName: "person")
+                                Text("Profile")
+                            }
+                        })
+                    }
+                }
+            }
             .background(Color.black.opacity(0.6).edgesIgnoringSafeArea(.all))
         }
         .navigationViewStyle(StackNavigationViewStyle())
