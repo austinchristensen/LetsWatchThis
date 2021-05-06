@@ -19,4 +19,8 @@ class MediaUpdater: ObservableObject {
         })
         print("updateMediaList array count: \(mediaList.count)")
     }
+    
+    public func resetMediaList() {
+        mediaList = []
+    }
 }

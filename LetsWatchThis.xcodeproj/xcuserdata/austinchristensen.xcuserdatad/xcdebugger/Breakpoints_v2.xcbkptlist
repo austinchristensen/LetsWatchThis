@@ -30,8 +30,8 @@
             filePath = "LetsWatchThis/Data Management/DataBaseJSONParser.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
             landmarkName = "parseMovies(jsonData:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "LetsWatchThis/Data Management/DataBaseJSONParser.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
             landmarkName = "parseMovies(jsonData:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -71,48 +71,48 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "EBF4C368-BEAB-4A5F-8550-635E2F9C5FCF"
-            shouldBeEnabled = "Yes"
+            uuid = "1A32DC79-40E6-40F9-9F82-261BE57C08B5"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsWatchThis/Data Management/DataManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
-            landmarkName = "addNewMediaToUserList(mediaItem:userID:updater:)"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "updateIsCompleted(mediaItem:userID:updater:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "4D9C5B10-2DFB-4BD8-8971-DBF6EA8FF3EF"
+            uuid = "6F96466D-C83A-4A33-A6F2-A96E5A8D7ABF"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsWatchThis/Data Management/DataManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
-            landmarkName = "addNewMediaToUserList(mediaItem:userID:updater:)"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "addData(urlString:params:updater:userID:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "BC728124-195E-42D6-A445-C086D9FA2234"
+            uuid = "F16247D1-678D-490A-A910-1FA091A39F49"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "LetsWatchThis/Data Management/DataBaseJSONParser.swift"
+            filePath = "LetsWatchThis/Data Management/DataManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "14"
-            endingLineNumber = "14"
-            landmarkName = "parseJSON(data:)"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "getData(urlString:updater:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

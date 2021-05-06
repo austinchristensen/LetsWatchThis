@@ -46,7 +46,7 @@ const getBooks = (request, response) => {
 const getMoviesByUserId = (request, response) => {
   const id = parseInt(request.params.id)
 
-  pool.query('SELECT * FROM movies JOIN users_movies ON movies.movie_id = users_movies.movie_id JOIN users ON users_movies.user_id = users.user_id WHERE users.user_id = $1', [id], (error, results) => {
+  pool.query('SELECT *, users_movies.isCompleted FROM movies JOIN users_movies ON movies.movie_id = users_movies.movie_id JOIN users ON users_movies.user_id = users.user_id WHERE users.user_id = $1', [id], (error, results) => {
     if (error) {
       throw error
     }
@@ -57,7 +57,7 @@ const getMoviesByUserId = (request, response) => {
 const getShowsByUserId = (request, response) => {
   const id = parseInt(request.params.id)
 
-  pool.query('SELECT * FROM shows JOIN users_shows ON shows.show_id = users_shows.show_id JOIN users ON users_shows.user_id = users.user_id WHERE users.user_id = $1', [id], (error, results) => {
+  pool.query('SELECT *, users_shows.isCompleted FROM shows JOIN users_shows ON shows.show_id = users_shows.show_id JOIN users ON users_shows.user_id = users.user_id WHERE users.user_id = $1', [id], (error, results) => {
     if (error) {
       throw error
     }
@@ -68,7 +68,7 @@ const getShowsByUserId = (request, response) => {
 const getBooksByUserId = (request, response) => {
   const id = parseInt(request.params.id)
 
-  pool.query('SELECT * FROM books JOIN users_books ON books.book_id = users_books.book_id JOIN users ON users_books.user_id = users.user_id WHERE users.user_id = $1', [id], (error, results) => {
+  pool.query('SELECT *, users_books.isCompleted FROM books JOIN users_books ON books.book_id = users_books.book_id JOIN users ON users_books.user_id = users.user_id WHERE users.user_id = $1', [id], (error, results) => {
     if (error) {
       throw error
     }
@@ -112,7 +112,7 @@ const addMovie = (request, response) => {
 const addShow = (request, response) => {
   const { title, summary, mediaType, imagePath } = request.body
 
-  pool.query('INSERT INTO shows (show_title, show_description, media_type, image_path) VALUES ($1, $2, $3, $4)', [title, summary, mediaType, imagePath], (error, results) => {
+  pool.query('INSERT INTO shows (show_title, show_description, media_type, image_path) VALUES ($1, $2, $3, $4) RETURNING *', [title, summary, mediaType, imagePath], (error, results) => {
     if (error) {
       throw error
     }
@@ -123,7 +123,7 @@ const addShow = (request, response) => {
 const addBook = (request, response) => {
   const { title, summary, mediaType, imagePath } = request.body
 
-  pool.query('INSERT INTO books (book_title, book_description, media_type, image_path) VALUES ($1, $2, $3, $4)', [title, summary, mediaType, imagePath], (error, results) => {
+  pool.query('INSERT INTO books (book_title, book_description, media_type, image_path) VALUES ($1, $2, $3, $4) RETURNING *', [title, summary, mediaType, imagePath], (error, results) => {
     if (error) {
       throw error
     }
@@ -200,6 +200,54 @@ const removeBookFromUserList = (request, response) => {
   })
 }
 
+const updateMovieIsCompleted = (request, response) => {
+  const id = parseInt(request.params.id)
+  const { isCompleted, userID, mediaID } = request.body
+
+  pool.query(
+    'UPDATE users_movies SET iscompleted = $1 WHERE user_id = $2 AND movie_id = $3;',
+    [isCompleted, userID, mediaID],
+    (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(201).send(`Is completed has been updated`)
+    }
+  )
+}
+
+const updateShowIsCompleted = (request, response) => {
+  const id = parseInt(request.params.id)
+  const { isCompleted, userID, mediaID } = request.body
+
+  pool.query(
+    'UPDATE users_shows SET iscompleted = $1 WHERE user_id = $2 AND show_id = $3;',
+    [isCompleted, userID, mediaID],
+    (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(201).send(`Is completed has been updated`)
+    }
+  )
+}
+
+const updateBookIsCompleted = (request, response) => {
+  const id = parseInt(request.params.id)
+  const { isCompleted, userID, mediaID } = request.body
+
+  pool.query(
+    'UPDATE users_books SET iscompleted = $1 WHERE user_id = $2 AND book_id = $3;',
+    [isCompleted, userID, mediaID],
+    (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(201).send(`Is completed has been updated`)
+    }
+  )
+}
+
 // curl --data "title=Test Movie Insert&summary=Test Movie 1 Test Descriptions&mediaType=movie&imagePath=imagePlaceholder" http://localhost:3000/movies
 // curl --data "userID=9&movieID=11&hasWatched=false" http://localhost:3000/moviesUpdateUserList
 // curl --data "userID=9&showID=11&hasWatched=false" http://localhost:3000/showsUpdateUserList
@@ -265,5 +313,8 @@ module.exports = {
   addBookToUserList,
   removeMovieFromUserList,
   removeShowFromUserList,
-  removeBookFromUserList
+  removeBookFromUserList,
+  updateBookIsCompleted,
+  updateShowIsCompleted,
+  updateMovieIsCompleted
 }
