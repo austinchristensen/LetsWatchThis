@@ -13,8 +13,9 @@ enum MediaType: String, Codable {
     case book
 }
 
-struct MediaItem : Codable {
+struct MediaItem : Codable, Equatable {
     var title: String
+    var mediaID: Int
     var id: UUID
     var isCompleted: Bool = false
     var description: String

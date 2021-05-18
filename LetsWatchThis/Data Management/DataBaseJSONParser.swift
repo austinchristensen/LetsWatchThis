@@ -11,9 +11,8 @@ class DataBaseJSONParser {
     
     func parseJSON(data: Data) -> [MediaItem] {
         do {
-            // make sure this JSON is in the format we expect
             if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
-                // try to read out a string array
+                guard json.count > 0 else { return [] }
                 if let type = json[0]["media_type"] as? String {
                     switch type.trimmingCharacters(in: .whitespacesAndNewlines) {
                     case "movie":
@@ -37,47 +36,78 @@ class DataBaseJSONParser {
     }
     
     private func parseMovies(jsonData: [[String: Any]]) -> [MediaItem] {
+        print("Parsing Movies")
         var parsedItems: [MediaItem] = []
         jsonData.forEach({ mediaItem in
-            //            let id = mediaItem["movie_id"] as? String,
             if let title = mediaItem["movie_title"] as? String,
+               let id = mediaItem["movie_id"] as? Int,
                let description = mediaItem["movie_description"] as? String,
+               let isCompleted = mediaItem["iscompleted"] as? Bool,
                let type = mediaItem["media_type"] as? String,
                let imagePath = mediaItem["image_path"] as? String {
-                let item = MediaItem(title: title, id: UUID(), isCompleted: false, description: description, type: MediaType(rawValue: type.trimmingCharacters(in: .whitespacesAndNewlines)) ?? .movie, imagePath: imagePath)
+                let item = MediaItem(title: title, mediaID: id, id: UUID(), isCompleted: isCompleted, description: description, type: MediaType(rawValue: type.trimmingCharacters(in: .whitespacesAndNewlines)) ?? .movie, imagePath: imagePath)
+                parsedItems.append(item)
+            } else if let title = mediaItem["movie_title"] as? String,
+                      let id = mediaItem["movie_id"] as? Int,
+                      let description = mediaItem["movie_description"] as? String,
+                      let type = mediaItem["media_type"] as? String,
+                      let imagePath = mediaItem["image_path"] as? String {
+                let item = MediaItem(title: title, mediaID: id, id: UUID(), isCompleted: false, description: description, type: MediaType(rawValue: type.trimmingCharacters(in: .whitespacesAndNewlines)) ?? .movie, imagePath: imagePath)
                 parsedItems.append(item)
             } else {
-                print("Couldn't properly parse this stuff")
+                print("Couldn't properly parse movie")
             }
         })
         return parsedItems
     }
     
     private func parseShows(jsonData: [[String: Any]]) -> [MediaItem] {
+        print("Parsing Shows")
         var parsedItems: [MediaItem] = []
         jsonData.forEach({ mediaItem in
-            //            let id = mediaItem["movie_id"] as? String,
             if let title = mediaItem["show_title"] as? String,
+               let id = mediaItem["show_id"] as? Int,
                let description = mediaItem["show_description"] as? String,
                let type = mediaItem["media_type"] as? String,
+               let isCompleted = mediaItem["iscompleted"] as? Bool,
                let imagePath = mediaItem["image_path"] as? String {
-                let item = MediaItem(title: title, id: UUID(), isCompleted: false, description: description, type: MediaType(rawValue: type.trimmingCharacters(in: .whitespacesAndNewlines)) ?? .show, imagePath: imagePath)
+                let item = MediaItem(title: title, mediaID: id, id: UUID(), isCompleted: isCompleted, description: description, type: MediaType(rawValue: type.trimmingCharacters(in: .whitespacesAndNewlines)) ?? .show, imagePath: imagePath)
                 parsedItems.append(item)
+            } else if let title = mediaItem["show_title"] as? String,
+                      let id = mediaItem["show_id"] as? Int,
+                      let description = mediaItem["show_description"] as? String,
+                      let type = mediaItem["media_type"] as? String,
+                      let imagePath = mediaItem["image_path"] as? String {
+                let item = MediaItem(title: title, mediaID: id, id: UUID(), isCompleted: false, description: description, type: MediaType(rawValue: type.trimmingCharacters(in: .whitespacesAndNewlines)) ?? .show, imagePath: imagePath)
+                parsedItems.append(item)
+            } else {
+                print("Couldn't properly parse show")
             }
         })
         return parsedItems
     }
     
     private func parseBooks(jsonData: [[String: Any]]) -> [MediaItem] {
+        print("Parsing Books")
         var parsedItems: [MediaItem] = []
         jsonData.forEach({ mediaItem in
-            //            let id = mediaItem["movie_id"] as? String,
             if let title = mediaItem["book_title"] as? String,
+               let id = mediaItem["book_id"] as? Int,
                let description = mediaItem["book_description"] as? String,
                let type = mediaItem["media_type"] as? String,
+               let isCompleted = mediaItem["iscompleted"] as? Bool,
                let imagePath = mediaItem["image_path"] as? String {
-                let item = MediaItem(title: title, id: UUID(), isCompleted: false, description: description, type: MediaType(rawValue: type.trimmingCharacters(in: .whitespacesAndNewlines)) ?? .book, imagePath: imagePath)
+                let item = MediaItem(title: title, mediaID: id, id: UUID(), isCompleted: isCompleted, description: description, type: MediaType(rawValue: type.trimmingCharacters(in: .whitespacesAndNewlines)) ?? .book, imagePath: imagePath)
                 parsedItems.append(item)
+            } else if let title = mediaItem["book_title"] as? String,
+                      let id = mediaItem["book_id"] as? Int,
+                      let description = mediaItem["book_description"] as? String,
+                      let type = mediaItem["media_type"] as? String,
+                      let imagePath = mediaItem["image_path"] as? String {
+                let item = MediaItem(title: title, mediaID: id, id: UUID(), isCompleted: false, description: description, type: MediaType(rawValue: type.trimmingCharacters(in: .whitespacesAndNewlines)) ?? .book, imagePath: imagePath)
+                parsedItems.append(item)
+            } else {
+                print("Couldn't properly parse book")
             }
         })
         return parsedItems

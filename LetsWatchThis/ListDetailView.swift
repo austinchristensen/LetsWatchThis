@@ -8,21 +8,32 @@
 import SwiftUI
 
 struct ListDetailView: View {
+    @State private var showingAddItem = false
+    @State var isBook: Bool = false
     let items: [MediaItem]
     let title: String
+    let userID: Int
+    let updater: MediaUpdater
     
     let columns = [
         GridItem(.adaptive(minimum: 100), spacing: 10)
     ]
     
     var body: some View {
+        let addNewItemView = AddNewItemView(imagePath: "imagePlaceholder", userId: userID, updater: updater, mediaType: items.first?.type.rawValue ?? "movie")
+        
         ScrollView() {
-            Text("Need to Watch")
-                .font(.largeTitle)
+            if isBook {
+                Text("Need to Read")
+                    .font(.largeTitle)
+            } else {
+                Text("Need to Watch")
+                    .font(.largeTitle)
+            }
             LazyVGrid(columns: columns, spacing: 20) {
                 ForEach(items, id: \.id) { item in
                     if (!item.isCompleted) {
-                        NavigationLink(destination: ItemDetailView(item: item)) {
+                        NavigationLink(destination: ItemDetailView(item: item, userID: userID, updater: updater)) {
                             VStack() {
                                 Image("\(item.imagePath)")
                                     .resizable()
@@ -34,12 +45,17 @@ struct ListDetailView: View {
                     }
                 }
             }
-            Text("Already Watched")
-                .font(.largeTitle)
+            if isBook {
+                Text("Already Read")
+                    .font(.largeTitle)
+            } else {
+                Text("Already Watched")
+                    .font(.largeTitle)
+            }
             LazyVGrid(columns: columns, spacing: 20) {
                 ForEach(items, id: \.id) { item in
                     if (item.isCompleted) {
-                        NavigationLink(destination: ItemDetailView(item: item)) {
+                        NavigationLink(destination: ItemDetailView(item: item, userID: userID, updater: updater)) {
                             VStack() {
                                 Image("\(item.imagePath)")
                                     .resizable()
@@ -53,18 +69,29 @@ struct ListDetailView: View {
             }
             .padding(.horizontal)
         }
+        .onAppear(perform: {
+            if !items.isEmpty {
+                isBook = items.first?.type == .book ? true : false
+            }
+        })
         .navigationTitle(title)
+        .navigationBarItems(trailing: Button("Add") {
+            self.showingAddItem.toggle()
+        })
+        .sheet(isPresented: $showingAddItem, content: {
+            addNewItemView
+        })
     }
 }
 
 struct ListDetailView_Previews: PreviewProvider {
     static var previews: some View {
         ListDetailView(items: [
-            MediaItem(title: "Movie 1", id: UUID(), isCompleted: true, description: "Description for Movie 1", type: .movie),
-            MediaItem(title: "Movie 2", id: UUID(), isCompleted: false, description: "Description for Movie 2", type: .movie),
-            MediaItem(title: "Movie 3", id: UUID(), isCompleted: true, description: "Description for Movie 3", type: .movie),
-            MediaItem(title: "Movie 4", id: UUID(), isCompleted: false, description: "Description for Movie 4", type: .movie),
-            MediaItem(title: "Movie 5", id: UUID(), isCompleted: true, description: "Description for Movie 5", type: .movie)
-        ], title: "My Movies:")
+            MediaItem(title: "Movie 1", mediaID: 1, id: UUID(), isCompleted: true, description: "Description for Movie 1", type: .movie),
+            MediaItem(title: "Movie 2", mediaID: 2, id: UUID(), isCompleted: false, description: "Description for Movie 2", type: .movie),
+            MediaItem(title: "Movie 3", mediaID: 3, id: UUID(), isCompleted: true, description: "Description for Movie 3", type: .movie),
+            MediaItem(title: "Movie 4", mediaID: 4, id: UUID(), isCompleted: false, description: "Description for Movie 4", type: .movie),
+            MediaItem(title: "Movie 5", mediaID: 5, id: UUID(), isCompleted: true, description: "Description for Movie 5", type: .movie)
+        ], title: "My Movies:", userID: 1, updater: MediaUpdater())
     }
 }

@@ -12,15 +12,13 @@ struct ContentView: View {
     @State private var isShowingShowDetailView = false
     @State private var isShowingBookDetailView = false
     @ObservedObject var updater = MediaUpdater()
+    let userID = 1
 
     let categories = [MediaType.movie, MediaType.show, MediaType.book]
     
     init() {
         UIToolbar.appearance().barTintColor = UIColor.black
-        print("content view init: \(updater.mediaList.count)")
-        DataManager.getData(urlString: "http://localhost:3000/movies", updater: updater)
-        DataManager.getData(urlString: "http://localhost:3000/shows", updater: updater)
-        DataManager.getData(urlString: "http://localhost:3000/books", updater: updater)
+        DataManager.getAllDataForUser(userID: userID, updater: updater)
     }
     
     var body: some View {
@@ -36,7 +34,7 @@ struct ContentView: View {
                                     HStack() {
                                         ForEach(updater.mediaList, id: \.id) { item in
                                             if (item.type == category) {
-                                                NavigationLink(destination: ItemDetailView(item: item)) {
+                                                NavigationLink(destination: ItemDetailView(item: item, userID: userID, updater: updater)) {
                                                     VStack {
                                                         Image("\(item.imagePath)")
                                                             .resizable()
@@ -53,7 +51,7 @@ struct ContentView: View {
                                         }
                                     }
                                 }
-                                NavigationLink(destination: ListDetailView(items: categoryToDisplay(type: category), title: "My \(category.rawValue.capitalizingFirstLetter())s:")) {
+                                NavigationLink(destination: ListDetailView(items: categoryToDisplay(type: category), title: "My \(category.rawValue.capitalizingFirstLetter())s:", userID: userID, updater: updater)) {
                                     Text("View \nAll\n\(category.rawValue.capitalizingFirstLetter())s")
                                     .foregroundColor(.white)
                                     .font(.title2)
@@ -88,8 +86,16 @@ struct ContentView: View {
 //
 //                        Button(action: {
 //                            print("Movies Button Pressed")
-//                            print(updater.mediaList.count)
 //                            isShowingMovieDetailView.toggle()
+//                            let json = [
+//                                "title": "Test Movie Insert",
+//                                "summary": "Test Movie 1 Test Descriptions",
+//                                "mediaType": "movie",
+//                                "imagePath": "imagePlaceholder"
+//                            ]
+//                            let urlString = "http://localhost:3000/movies"
+//
+//                            DataManager.addData(urlString: urlString, params: json, updater: updater, userID: userID)
 //                        }, label: {
 //                            VStack {
 //                                Image(systemName: "film")
@@ -100,6 +106,15 @@ struct ContentView: View {
 //                        Button(action: {
 //                            print("Shows Button Pressed")
 //                            isShowingShowDetailView.toggle()
+//                            let json = [
+//                                "title": "Test Show Insert",
+//                                "summary": "Test Show 1 Test Descriptions",
+//                                "mediaType": "show",
+//                                "imagePath": "imagePlaceholder"
+//                            ]
+//                            let urlString = "http://localhost:3000/shows"
+//
+//                            DataManager.addData(urlString: urlString, params: json, updater: updater, userID: userID)
 //                        }, label: {
 //                            VStack {
 //                                Image(systemName: "tv")
@@ -110,6 +125,15 @@ struct ContentView: View {
 //                        Button(action: {
 //                            print("Books Button Pressed")
 //                            isShowingBookDetailView.toggle()
+//                            let json = [
+//                                "title": "Test Book Insert",
+//                                "summary": "Test Book 1 Test Descriptions",
+//                                "mediaType": "book",
+//                                "imagePath": "imagePlaceholder"
+//                            ]
+//                            let urlString = "http://localhost:3000/books"
+//
+//                            DataManager.addData(urlString: urlString, params: json, updater: updater, userID: userID)
 //                        }, label: {
 //                            VStack {
 //                                Image(systemName: "book")
