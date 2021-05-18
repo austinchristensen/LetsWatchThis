@@ -201,7 +201,6 @@ const removeBookFromUserList = (request, response) => {
 }
 
 const updateMovieIsCompleted = (request, response) => {
-  const id = parseInt(request.params.id)
   const { isCompleted, userID, mediaID } = request.body
 
   pool.query(
@@ -217,7 +216,6 @@ const updateMovieIsCompleted = (request, response) => {
 }
 
 const updateShowIsCompleted = (request, response) => {
-  const id = parseInt(request.params.id)
   const { isCompleted, userID, mediaID } = request.body
 
   pool.query(
@@ -233,7 +231,6 @@ const updateShowIsCompleted = (request, response) => {
 }
 
 const updateBookIsCompleted = (request, response) => {
-  const id = parseInt(request.params.id)
   const { isCompleted, userID, mediaID } = request.body
 
   pool.query(

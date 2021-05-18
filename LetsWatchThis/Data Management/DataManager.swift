@@ -29,7 +29,7 @@ public class DataManager {
         task.resume()
     }
     
-    static func addData(urlString: String, params: [String: String], updater: MediaUpdater, userID: Int) {
+    static func addData(urlString: String, params: [String: String], updater: MediaUpdater, userID: Int, isCompleted: Bool) {
         guard let url = URL(string: urlString) else { return }
         do {
             let session = URLSession.shared
@@ -41,11 +41,13 @@ public class DataManager {
                 if let data = data {
                     let mediaItems = DataBaseJSONParser().parseJSON(data: data)
                     if !mediaItems.isEmpty, let mediaItem = mediaItems.first {
-                        addNewMediaToUserList(mediaItem: mediaItem, userID: userID, updater: updater)
+                        print("$$$ we are calling addNewMediaToUserList from inside addData")
+                        addNewMediaToUserList(mediaItem: mediaItem, userID: userID, updater: updater, isCompleted: isCompleted)
                     }
                 }
                 if let httpResponse = response as? HTTPURLResponse {
                     if httpResponse.statusCode == 201 {
+                        print("$$$ we are calling getAllDataForUser from inside addData")
                         getAllDataForUser(userID: userID, updater: updater)
                     }
                 }
@@ -56,16 +58,16 @@ public class DataManager {
         }
     }
     
-    static private func addNewMediaToUserList(mediaItem: MediaItem, userID: Int, updater: MediaUpdater) {
+    static private func addNewMediaToUserList(mediaItem: MediaItem, userID: Int, updater: MediaUpdater, isCompleted: Bool) {
         let type = mediaItem.type.rawValue
         let mediaID = mediaItem.mediaID
         let url = "http://localhost:3000/\(type)sUpdateUserList"
         let params = [
             "userID": "\(userID)",
             "\(type)ID": "\(mediaID)",
-            "hasWatched": "false"
+            "hasWatched": "\(isCompleted)"
         ]
-        DataManager.addData(urlString: url, params: params, updater: updater, userID: userID)
+        DataManager.addData(urlString: url, params: params, updater: updater, userID: userID, isCompleted: isCompleted)
     }
     
     static func updateIsCompleted(mediaItem: MediaItem, userID: Int, updater: MediaUpdater) {
@@ -78,7 +80,7 @@ public class DataManager {
             "userID": "\(userID)",
             "mediaID": "\(mediaID)"
         ]
-        DataManager.addData(urlString: url, params: params, updater: updater, userID: userID)
+        DataManager.addData(urlString: url, params: params, updater: updater, userID: userID, isCompleted: isCompleted)
     }
     
     static func removeFromUsersList(userID: Int, mediaItem: MediaItem, updater: MediaUpdater) {

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ListDetailView: View {
+    @State private var showingAddItem = false
     @State var isBook: Bool = false
     let items: [MediaItem]
     let title: String
@@ -19,6 +20,8 @@ struct ListDetailView: View {
     ]
     
     var body: some View {
+        let addNewItemView = AddNewItemView(imagePath: "imagePlaceholder", userId: userID, updater: updater, mediaType: items.first?.type.rawValue ?? "movie")
+        
         ScrollView() {
             if isBook {
                 Text("Need to Read")
@@ -72,6 +75,12 @@ struct ListDetailView: View {
             }
         })
         .navigationTitle(title)
+        .navigationBarItems(trailing: Button("Add") {
+            self.showingAddItem.toggle()
+        })
+        .sheet(isPresented: $showingAddItem, content: {
+            addNewItemView
+        })
     }
 }
 
