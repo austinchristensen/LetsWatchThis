@@ -41,13 +41,11 @@ public class DataManager {
                 if let data = data {
                     let mediaItems = DataBaseJSONParser().parseJSON(data: data)
                     if !mediaItems.isEmpty, let mediaItem = mediaItems.first {
-                        print("$$$ we are calling addNewMediaToUserList from inside addData")
                         addNewMediaToUserList(mediaItem: mediaItem, userID: userID, updater: updater, isCompleted: isCompleted)
                     }
                 }
                 if let httpResponse = response as? HTTPURLResponse {
                     if httpResponse.statusCode == 201 {
-                        print("$$$ we are calling getAllDataForUser from inside addData")
                         getAllDataForUser(userID: userID, updater: updater)
                     }
                 }

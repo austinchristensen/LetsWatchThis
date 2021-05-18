@@ -20,8 +20,6 @@ struct ListDetailView: View {
     ]
     
     var body: some View {
-        let addNewItemView = AddNewItemView(imagePath: "imagePlaceholder", userId: userID, updater: updater, mediaType: items.first?.type.rawValue ?? "movie")
-        
         ScrollView() {
             if isBook {
                 Text("Need to Read")
@@ -79,7 +77,7 @@ struct ListDetailView: View {
             self.showingAddItem.toggle()
         })
         .sheet(isPresented: $showingAddItem, content: {
-            addNewItemView
+            AddNewItemView(imagePath: "imagePlaceholder", userId: userID, updater: updater, mediaType: items.first?.type.rawValue ?? "movie")
         })
     }
 }

@@ -36,7 +36,6 @@ class DataBaseJSONParser {
     }
     
     private func parseMovies(jsonData: [[String: Any]]) -> [MediaItem] {
-        print("Parsing Movies")
         var parsedItems: [MediaItem] = []
         jsonData.forEach({ mediaItem in
             if let title = mediaItem["movie_title"] as? String,
@@ -62,7 +61,6 @@ class DataBaseJSONParser {
     }
     
     private func parseShows(jsonData: [[String: Any]]) -> [MediaItem] {
-        print("Parsing Shows")
         var parsedItems: [MediaItem] = []
         jsonData.forEach({ mediaItem in
             if let title = mediaItem["show_title"] as? String,
@@ -88,7 +86,6 @@ class DataBaseJSONParser {
     }
     
     private func parseBooks(jsonData: [[String: Any]]) -> [MediaItem] {
-        print("Parsing Books")
         var parsedItems: [MediaItem] = []
         jsonData.forEach({ mediaItem in
             if let title = mediaItem["book_title"] as? String,

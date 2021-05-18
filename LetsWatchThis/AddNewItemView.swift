@@ -19,7 +19,6 @@ struct AddNewItemView: View {
     @State public var mediaType: String
     @State var hasWatched: Bool = false
     
-    
     init(imagePath: String, userId: Int, updater: MediaUpdater, mediaType: String) {
         self.imagePath = imagePath
         self._defaultImagePath = State(wrappedValue: imagePath)
@@ -67,9 +66,3 @@ struct AddNewItemView: View {
         DataManager.addData(urlString: urlString, params: json, updater: updater, userID: userID, isCompleted: hasWatched)
     }
 }
-
-//struct AddNewItemView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AddNewItemView()
-//    }
-//}
