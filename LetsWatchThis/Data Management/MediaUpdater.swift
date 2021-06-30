@@ -9,7 +9,7 @@ import Foundation
 
 class MediaUpdater: ObservableObject {
     @Published var mediaList: [MediaItem] = []
-    @Published var newlyAddedMediaItem: MediaItem?
+    @Published var userId: Int = -1
 
     public func updateMediaList(newItems: [MediaItem]) {
         newItems.forEach({ item in
@@ -18,6 +18,10 @@ class MediaUpdater: ObservableObject {
             }
         })
         print("updateMediaList array count: \(mediaList.count)")
+    }
+    
+    public func updateUserID(newUserId: Int) {
+        userId = newUserId
     }
     
     public func resetMediaList() {

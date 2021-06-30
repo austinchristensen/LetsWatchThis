@@ -35,6 +35,19 @@ class DataBaseJSONParser {
         return []
     }
     
+    func parseUserIdJSON(data: Data) -> Int? {
+        do {
+            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
+                print(json)
+                return 1
+            }
+        } catch let error as NSError {
+            print("Failed to load: \(error.localizedDescription)")
+        }
+        
+        return nil
+    }
+    
     private func parseMovies(jsonData: [[String: Any]]) -> [MediaItem] {
         var parsedItems: [MediaItem] = []
         jsonData.forEach({ mediaItem in

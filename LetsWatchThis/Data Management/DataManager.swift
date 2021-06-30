@@ -17,6 +17,26 @@ public class DataManager {
         DataManager.getData(urlString: "http://localhost:3000/users-books/\(userID)", updater: updater)
     }
     
+    static func getUserId(params: [String: String], updater: MediaUpdater) {
+        guard let url = URL(string: "http://localhost:3000/getUserId") else { return }
+        do {
+            let session = URLSession.shared
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            let jsonData = try JSONSerialization.data(withJSONObject: params, options: [])
+            let task = session.uploadTask(with: request, from: jsonData) { (data, response, error) in
+                if let data = data {
+                    let foo = DataBaseJSONParser().parseUserIdJSON(data: data)
+                    updater.updateUserID(newUserId: 1)
+                }
+            }
+            task.resume()
+        } catch {
+            print("Oops our json didn't serialize")
+        }
+    }
+    
     static func getData(urlString: String, updater: MediaUpdater) {
         guard let url = URL(string: urlString) else { return }
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in

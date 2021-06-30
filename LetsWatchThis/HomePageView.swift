@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct HomePageView: View {
     @State private var isShowingMovieDetailView = false
     @State private var isShowingShowDetailView = false
     @State private var isShowingBookDetailView = false
@@ -95,6 +95,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        HomePageView()
     }
 }
